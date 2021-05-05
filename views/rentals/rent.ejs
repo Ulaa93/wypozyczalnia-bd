@@ -1,0 +1,25 @@
+<h2>Wypożycz grę</h2>
+<form action="/rentals" method="POST">
+	<div>
+		<label>Tytuł</label>
+		<input type="text" name="title" value="<%=game.title%>" />
+	</div>
+	<div>
+		<label>Imię</label>
+		<input type="text" name="name" value="<%=customer.name%>" />
+	</div>
+	<div>
+		<label>Nazwisko</label>
+		<input type="text" name="lastName" value="<%=customer.lastName%>" />
+	</div>
+	<div>
+		<label>Mail</label>
+		<input type="text" name="mail" value="<%=customer.mail%>" />
+	</div>
+	<div>
+		<label>Data wypożyczenia</label>
+		<input type="text" name="date" value="<%=rental.date%>" />
+	</div>
+	<a href="/games">Anuluj</a>
+	<button type="submit">Wypożycz</button>
+</form>

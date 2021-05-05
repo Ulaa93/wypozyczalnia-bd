@@ -1,0 +1,27 @@
+<h2>Szukaj użytkownika</h2>
+<form action="/customers" method="GET">
+	<label>Nazwisko</label>
+	<input type="text" name="lastName" value="<%=searchOptions.lastName%>" />
+	<button type="submit">Szukaj</button>
+</form>
+<br />
+<div class="container-customers">
+	<div>Imię</div>
+	<div>Nazwisko</div>
+	<div>Mail</div>
+	<div>Zobacz</div>
+	<div>Edytuj</div>
+	<div>Usuń</div>
+</div>
+<% customers.forEach(customer=>{%>
+<div class="container-customers">
+	<div><%=customer.name%></div>
+	<div><%=customer.lastName%></div>
+	<div><%=customer.mail%></div>
+	<div><a href="/customers/<%=customer.id%>">Zobacz</a></div>
+	<div><a href="/customers/<%=customer.id%>/edit">Edytuj</a></div>
+	<div>
+		<%-include('../partials/deleteForm',{url:`/customers/${customer.id}`})%>
+	</div>
+</div>
+<%})%>

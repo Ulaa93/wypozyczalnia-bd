@@ -1,0 +1,6 @@
+<h2>Edytuj grę</h2>
+<form action="/games/<%= game.id%>?_method=PUT" method="POST">
+	<%-include('./_form_fields')%>
+	<a href="/games/<%= game.id%>">Anuluj</a>
+	<button type="submit">Zapisz</button>
+</form>

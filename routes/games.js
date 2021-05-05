@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Game = require('../models/game');
+const Rental = require('../models/rental');
 
 //All games
 router.get('/', async (req, res) => {
@@ -27,27 +28,88 @@ router.get('/new', (req, res) => {
 //Create games route
 router.post('/', async (req, res) => {
 	const game = new Game({
-		title: req.body.title
+		title: req.body.title,
+		description: req.body.description,
+		players: req.body.players,
+		age: req.body.age,
+		time: req.body.time,
+		numberInStock: req.body.numberInStock
 	});
 	try {
 		const newGame = await game.save();
-		// res.redirect(`games/${newGame.id}`);
-		res.redirect('games');
+		res.redirect(`games/${newGame._id}`);
 	} catch (error) {
 		res.render('games/new', {
 			game: game,
 			errorMessage: 'Error creating game'
 		});
 	}
-	// game.save((err, newGame) => {
-	// 	if (err) {
-	//
-	// 		});
-	// 	} else {
-	// 		// res.redirect(`games/${newGame.id}`)
-	// 		res.redirect('games');
-	// 	}
-	// });
-	// res.send(req.body.title);
 });
+
+router.get('/:id', async (req, res) => {
+	try {
+		const game = await Game.findById(req.params.id).exec();
+		res.render('games/show', { game: game });
+	} catch {
+		res.redirect('/');
+	}
+});
+
+// router.get('/:id/rent', async (req, res) => {
+// 	try {
+// 		const game = await (await Game.findById(req.params.id))
+// 			.populate('rental')
+// 			.exec();
+// 		res.render('rentals/rent', { game: game });
+// 	} catch {
+// 		res.redirect('/rentals');
+// 	}
+// });
+
+router.get('/:id/edit', async (req, res) => {
+	try {
+		const game = await Game.findById(req.params.id);
+		res.render('games/edit', { game: game });
+	} catch {
+		res.redirect('/games');
+	}
+});
+router.put('/:id', async (req, res) => {
+	let game;
+	game = await Game.findById(req.params.id);
+	game.title = req.body.title;
+	game.description = req.body.description;
+	game.players = req.body.players;
+	game.age = req.body.age;
+	game.time = req.body.time;
+	game.numberInStock = req.body.numberInStock;
+	try {
+		await game.save();
+		res.redirect(`/games/${game._id}`);
+	} catch (error) {
+		if (game == null) {
+			res.redirect('/');
+		} else {
+			res.render('games/edit', {
+				game: game,
+				errorMessage: 'Error updating game'
+			});
+		}
+	}
+});
+router.delete('/:id', async (req, res) => {
+	let game;
+	try {
+		game = await Game.findById(req.params.id);
+		await game.remove();
+		res.redirect('/games');
+	} catch {
+		if (game == null) {
+			res.redirect('/');
+		} else {
+			res.redirect(`games/${game._id}`);
+		}
+	}
+});
+
 module.exports = router;

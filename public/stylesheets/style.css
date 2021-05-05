@@ -1,0 +1,42 @@
+body {
+	text-align: center;
+}
+header nav {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	justify-content: space-between;
+}
+header nav ul {
+	display: flex;
+	width: 70%;
+}
+header nav ul li {
+	flex-basis: 22%;
+	list-style: none;
+}
+.container-rentals,
+.container-games,
+.container-customers {
+	margin: 0 auto;
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+	justify-items: center;
+	align-items: center;
+}
+.container-rentals div {
+	flex-basis: 19%;
+	padding: 10px 0;
+	text-align: center;
+}
+.container-games div {
+	flex-basis: 15%;
+	padding: 10px 0;
+	text-align: center;
+}
+.container-customers div {
+	flex-basis: 18%;
+	padding: 10px 0;
+	text-align: center;
+}

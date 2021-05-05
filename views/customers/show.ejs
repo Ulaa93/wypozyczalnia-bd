@@ -1,0 +1,5 @@
+<h2><%= customer.name+' ' +customer.lastName%></h2>
+<div>mail: <%=customer.mail%></div>
+<a href="/customers/<%=customer.id%>/edit">Edytuj</a>
+<%-include('../partials/deleteForm',{url:`/customers/${customer.id}`})%>
+<div>Wypożyczenia:</div>

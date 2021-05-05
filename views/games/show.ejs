@@ -1,0 +1,9 @@
+<h2><%= game.title%></h2>
+<div>Opis: <%=game.description%></div>
+<div>Ilość graczy: <%=game.players%></div>
+<div>Wiek graczy: <%=game.age%></div>
+<div>Czas rozgrywki: <%=game.time%></div>
+<div>Dostępność: <%=game.numberInStock>0?'dostępna':'niedostępna'%></div>
+<a href="/rentals/<%=game.id%>/rent">Wypożycz</a>
+<a href="/games/<%=game.id%>/edit">Edytuj</a>
+<%-include('../partials/deleteForm',{url:`/games/${game.id}`})%>

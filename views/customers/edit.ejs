@@ -1,0 +1,6 @@
+<h2>Edytuj użytkownika</h2>
+<form action="/customers/<%= customer.id%>?_method=PUT" method="POST">
+	<%-include('./_form_fields')%>
+	<a href="/customers/<%= customer.id%>">Anuluj</a>
+	<button type="submit">Zapisz</button>
+</form>

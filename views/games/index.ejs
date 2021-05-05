@@ -5,6 +5,29 @@
 	<button type="submit">Szukaj</button>
 </form>
 <br />
+<div class="container-games">
+	<div>Tytuł</div>
+	<div>Ilość graczy</div>
+	<div>Wiek</div>
+	<div>Czas gry</div>
+	<div>Dostępność</div>
+
+	<div>Zobacz</div>
+	<div>Wypożycz</div>
+</div>
 <% games.forEach(game=>{%>
-<div><%=game.title%></div>
+<div class="container-games">
+	<div><%=game.title%></div>
+	<div><%=game.players%></div>
+	<div><%=game.age%></div>
+	<div><%=game.time%></div>
+	<div><%=game.numberInStock>0?'dostępne':'niedostępne'%></div>
+	<div><a href="/games/<%=game.id%>">Zobacz</a></div>
+	<% if(game.numberInStock>0){%>
+	<div><a href="/rentals/<%=game.id%>/rent">Wypożycz</a></div>
+	<%}else{%>
+	<div>niedostępne</div>
+
+	<%}%>
+</div>
 <%})%>
