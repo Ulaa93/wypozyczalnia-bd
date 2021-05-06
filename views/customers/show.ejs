@@ -3,3 +3,28 @@
 <a href="/customers/<%=customer.id%>/edit">Edytuj</a>
 <%-include('../partials/deleteForm',{url:`/customers/${customer.id}`})%>
 <div>Wypożyczenia:</div>
+<div class="container-rentals">
+	<div>Gra</div>
+	<div>ID klienta</div>
+	<div>Data wypożyczenia</div>
+	<div>Data zwrotu</div>
+	<div>Zwrot</div>
+</div>
+
+<% rentals.forEach(rental=>{%>
+<div class="container-rentals">
+	<div>
+		<a href="/games/<%=rental.game.id%>"><%=rental.game.title%></a>
+	</div>
+	<div>
+		<a href="/customers/<%=rental.customer%>"><%=rental.customer%></a>
+	</div>
+
+	<div><%=rental.date.toISOString().split('T')[0]%></div>
+
+	<div><%=rental.dateOfReturn.toISOString().split('T')[0]%></div>
+	<div>
+		<%-include('../partials/deleteForm',{url:`/rentals/${rental.id}`})%>
+	</div>
+</div>
+<%})%>

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Customer = require('../models/customer');
 const Game = require('../models/game');
+const Rental = require('../models/rental');
 
 //All customers
 router.get('/', async (req, res) => {
@@ -49,7 +50,10 @@ router.post('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
 	try {
 		const customer = await Customer.findById(req.params.id).exec();
-		res.render('customers/show', { customer: customer });
+		const rentals = await Rental.find({ customer: customer.id })
+			.populate('game')
+			.exec();
+		res.render('customers/show', { customer: customer, rentals: rentals });
 	} catch {
 		res.redirect('/');
 	}

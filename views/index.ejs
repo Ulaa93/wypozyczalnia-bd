@@ -1,5 +1,5 @@
 <h2>Gry</h2>
-<div class="container-games">
+<div class="container-games menu">
 	<div>Tytuł</div>
 	<div>Ilość graczy</div>
 	<div>Wiek</div>
@@ -14,10 +14,12 @@
 	<div><%=game.players%></div>
 	<div><%=game.age%></div>
 	<div><%=game.time%></div>
-	<div><%=game.numberInStock%></div>
+	<div><%=game.numberInStock>0?'dostępne':'niedostępne'%></div>
 	<div><a href="/games/<%=game.id%>">Zobacz</a></div>
 	<% if(game.numberInStock>0){%>
 	<div><a href="/rentals/<%=game.id%>/rent">Wypożycz</a></div>
+	<%}else{%>
+	<div>niedostępne</div>
 	<%}%>
 </div>
 <%})%>
