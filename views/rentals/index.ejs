@@ -1,11 +1,7 @@
 <h2>Szukaj wypożyczeń</h2>
 <form action="/rentals" method="GET">
-	<label>Tytuł</label>
-	<input
-		type="text"
-		name="title"
-		value="<%=searchOptions.game||searchOptions.mail%>"
-	/>
+	<label>Tytuł gry</label>
+	<input type="text" name="title" value="<%=searchOptions.title%>" />
 	<button type="submit">Szukaj</button>
 </form>
 <br />

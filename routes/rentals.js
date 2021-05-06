@@ -3,13 +3,13 @@ const router = express.Router();
 const Rental = require('../models/rental');
 const Customer = require('../models/customer');
 const Game = require('../models/game');
-const Fawn = require('fawn');
+// const Fawn = require('fawn');
 const mongoose = require('mongoose');
 // const { db } = require('../models/game');
 const game = require('../models/game');
 const customer = require('../models/customer');
 
-Fawn.init(mongoose);
+// Fawn.init(mongoose);
 
 //All rentals
 router.get('/', async (req, res) => {
@@ -18,7 +18,8 @@ router.get('/', async (req, res) => {
 		searchOptions.title = new RegExp(req.query.title, 'i');
 	}
 	try {
-		const rentals = await Rental.find(searchOptions).populate('game').exec();
+		const games = await Game.find(searchOptions);
+		const rentals = await Rental.find({ game: games }).populate('game').exec();
 		res.render('rentals/index', {
 			rentals: rentals,
 			searchOptions: req.query
