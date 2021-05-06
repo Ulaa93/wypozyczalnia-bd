@@ -21,23 +21,6 @@ const rentalSchema = new mongoose.Schema({
 		required: true,
 		ref: 'Customer'
 	}
-
-	// gameTitle: {
-	// 	type: String,
-	// 	required: true
-	// },
-	// gameId: {
-	// 	type: String,
-	// 	required: true
-	// },
-	// customerId: {
-	// 	type: String,
-	// 	required: true
-	// },
-	// customerName: {
-	// 	type: String,
-	// 	required: true
-	// }
 });
 
 module.exports = mongoose.model('Rental', rentalSchema);

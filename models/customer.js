@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Rental = require('./rental');
 
 const customerSchema = new mongoose.Schema({
 	name: {
@@ -19,5 +20,15 @@ const customerSchema = new mongoose.Schema({
 		ref: 'Rentals'
 	}
 });
-
+customerSchema.pre('remove', function (next) {
+	Rental.find({ customer: this.id }, (err, rentals) => {
+		if (err) {
+			next(err);
+		} else if (rentals.length > 0) {
+			next(new Error('This customer has games still'));
+		} else {
+			next();
+		}
+	});
+});
 module.exports = mongoose.model('Customer', customerSchema);

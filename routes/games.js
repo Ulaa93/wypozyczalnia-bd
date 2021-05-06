@@ -55,17 +55,6 @@ router.get('/:id', async (req, res) => {
 	}
 });
 
-// router.get('/:id/rent', async (req, res) => {
-// 	try {
-// 		const game = await (await Game.findById(req.params.id))
-// 			.populate('rental')
-// 			.exec();
-// 		res.render('rentals/rent', { game: game });
-// 	} catch {
-// 		res.redirect('/rentals');
-// 	}
-// });
-
 router.get('/:id/edit', async (req, res) => {
 	try {
 		const game = await Game.findById(req.params.id);
@@ -74,6 +63,7 @@ router.get('/:id/edit', async (req, res) => {
 		res.redirect('/games');
 	}
 });
+
 router.put('/:id', async (req, res) => {
 	let game;
 	game = await Game.findById(req.params.id);
@@ -97,6 +87,7 @@ router.put('/:id', async (req, res) => {
 		}
 	}
 });
+
 router.delete('/:id', async (req, res) => {
 	let game;
 	try {
@@ -107,7 +98,10 @@ router.delete('/:id', async (req, res) => {
 		if (game == null) {
 			res.redirect('/');
 		} else {
-			res.redirect(`games/${game._id}`);
+			res.render('games/show', {
+				game: game,
+				errorMessage: 'Nie można usunąć gry będącej aktualnie w wypożyczeniu'
+			});
 		}
 	}
 });

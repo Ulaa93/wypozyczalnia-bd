@@ -91,15 +91,26 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
 	let customer;
+	let rentals;
 	try {
 		customer = await Customer.findById(req.params.id);
+		rentals = await Rental.find({ customer: customer.id })
+			.populate('game')
+			.exec();
 		await customer.remove();
 		res.redirect('/customers');
 	} catch {
 		if (customer == null) {
 			res.redirect('/');
 		} else {
-			res.redirect(`customers/${customer.id}`);
+			let searchOptions = {};
+			let customers = await Customer.find(searchOptions);
+			res.render('customers/index', {
+				customers: customers,
+				searchOptions: req.query,
+				errorMessage:
+					'Nie można usunąć klienta posiadającego aktualne wypożyczenia'
+			});
 		}
 	}
 });

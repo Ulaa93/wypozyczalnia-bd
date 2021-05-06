@@ -33,14 +33,10 @@ router.get('/', async (req, res) => {
 router.get('/:id/rent', async (req, res) => {
 	try {
 		const game = await Game.findById(req.params.id);
+		const customers = await Customer.find({});
 		res.render('rentals/rent', {
 			game: game,
-			customer:
-				new Customer({
-					name: req.body.name,
-					lastName: req.body.lastName,
-					mail: req.body.mail
-				}) || customer,
+			customers: customers,
 			rental: new Rental({
 				game: req.body.title,
 				customer: req.body.mail,
@@ -54,22 +50,13 @@ router.get('/:id/rent', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-	let customerID = await Customer.findOne({ mail: req.body.mail });
+	let customers = await Customer.find({});
 	let gameID = await Game.findOne({ title: req.body.title });
 	let rental;
-	let newCustomer;
-
-	if (customerID == null || customerID == '') {
-		newCustomer = new Customer({
-			name: req.body.name,
-			lastName: req.body.lastName,
-			mail: req.body.mail
-		});
-	}
 	let date = new Date(req.body.date);
 	rental = new Rental({
 		game: gameID,
-		customer: customerID || newCustomer.id,
+		customer: req.body.customer,
 		date: req.body.date,
 		dateOfReturn: date.setDate(date.getDate() + 30)
 	});
@@ -81,21 +68,13 @@ router.post('/', async (req, res) => {
 	gameID.time = gameID.time;
 	gameID.numberInStock = gameID.numberInStock - 1;
 	try {
-		const newRental = await rental.save();
-		if (newCustomer != null && newCustomer != '') {
-			await newCustomer.save();
-		}
+		await rental.save();
 		await gameID.save();
 		res.redirect('/rentals');
 	} catch (error) {
 		res.render('rentals/rent', {
 			game: game,
-			customer:
-				new Customer({
-					name: req.body.name,
-					lastName: req.body.lastName,
-					mail: req.body.mail
-				}) || customer,
+			customers: customers,
 			rental: new Rental({
 				game: req.body.title,
 				customer: req.body.mail,

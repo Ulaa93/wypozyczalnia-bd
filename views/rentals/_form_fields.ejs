@@ -1,0 +1,24 @@
+<div>
+	<label>Tytuł</label>
+	<input type="text" name="title" value="<%=game.title%>" />
+</div>
+<div>
+	<label>Klient</label>
+	<select name="customer">
+		<% customers.forEach(customer => { %> <% if (customer.id ===
+		rental.customer) { %>
+
+		<option selected label="<%= customer.mail %>" value="<%= customer.id %>">
+			<% } else { %>
+		</option>
+
+		<option label="<%= customer.mail %>" value="<%= customer.id %>">
+			<% } }) %>
+		</option>
+	</select>
+</div>
+
+<div>
+	<label>Data wypożyczenia</label>
+	<input type="text" name="date" value="<%=rental.date%>" />
+</div>
