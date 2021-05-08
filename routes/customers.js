@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Customer = require('../models/customer');
-const Game = require('../models/game');
 const Rental = require('../models/rental');
 
 //All customers
@@ -42,7 +41,7 @@ router.post('/', async (req, res) => {
 	} catch (error) {
 		res.render('customers/new', {
 			customer: customer,
-			errorMessage: 'Error creating customer'
+			errorMessage: 'Błąd podczas tworzenia klienta'
 		});
 	}
 });
@@ -83,7 +82,7 @@ router.put('/:id', async (req, res) => {
 		} else {
 			res.render('customers/edit', {
 				customer: customer,
-				errorMessage: 'Error updating customer'
+				errorMessage: 'Błąd podczas edycji danych'
 			});
 		}
 	}
@@ -91,12 +90,8 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
 	let customer;
-	let rentals;
 	try {
 		customer = await Customer.findById(req.params.id);
-		rentals = await Rental.find({ customer: customer.id })
-			.populate('game')
-			.exec();
 		await customer.remove();
 		res.redirect('/customers');
 	} catch {

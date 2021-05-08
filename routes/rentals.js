@@ -3,14 +3,10 @@ const router = express.Router();
 const Rental = require('../models/rental');
 const Customer = require('../models/customer');
 const Game = require('../models/game');
-// const Fawn = require('fawn');
 const mongoose = require('mongoose');
-// const { db } = require('../models/game');
-const game = require('../models/game');
-const customer = require('../models/customer');
+const Fawn = require('Fawn');
 
-// Fawn.init(mongoose);
-
+Fawn.init(mongoose);
 //All rentals
 router.get('/', async (req, res) => {
 	let searchOptions = {};
@@ -61,27 +57,23 @@ router.post('/', async (req, res) => {
 		dateOfReturn: date.setDate(date.getDate() + 30)
 	});
 
-	gameID.title = gameID.title;
-	gameID.description = gameID.description;
-	gameID.players = gameID.players;
-	gameID.age = gameID.age;
-	gameID.time = gameID.time;
-	gameID.numberInStock = gameID.numberInStock - 1;
 	try {
 		await rental.save();
-		await gameID.save();
+		await new Fawn.Task()
+			.update('games', { _id: gameID._id }, { $inc: { numberInStock: -1 } })
+			.run();
 		res.redirect('/rentals');
 	} catch (error) {
 		res.render('rentals/rent', {
-			game: game,
+			game: gameID,
 			customers: customers,
 			rental: new Rental({
 				game: req.body.title,
-				customer: req.body.mail,
+				customer: req.body.customer,
 				date: req.body.date
 			}),
 			date: req.body.date,
-			errorMessage: 'Error creating rental'
+			errorMessage: 'Błąd podczas tworzenia wypożyczenia'
 		});
 	}
 });
@@ -89,14 +81,11 @@ router.post('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
 	let rental = await Rental.findById(req.params.id);
 	let gameID = await Game.findById(rental.game);
-	gameID.title = gameID.title;
-	gameID.description = gameID.description;
-	gameID.players = gameID.players;
-	gameID.age = gameID.age;
-	gameID.time = gameID.time;
-	gameID.numberInStock = gameID.numberInStock + 1;
+
 	try {
-		await gameID.save();
+		await new Fawn.Task()
+			.update('games', { _id: gameID._id }, { $inc: { numberInStock: +1 } })
+			.run();
 		await rental.remove();
 		res.redirect('/rentals');
 	} catch {

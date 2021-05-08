@@ -41,7 +41,7 @@ router.post('/', async (req, res) => {
 	} catch (error) {
 		res.render('games/new', {
 			game: game,
-			errorMessage: 'Error creating game'
+			errorMessage: 'Błąd podczas tworzenia gry'
 		});
 	}
 });
@@ -82,7 +82,7 @@ router.put('/:id', async (req, res) => {
 		} else {
 			res.render('games/edit', {
 				game: game,
-				errorMessage: 'Error updating game'
+				errorMessage: 'Błąd podczas edycji gry'
 			});
 		}
 	}
