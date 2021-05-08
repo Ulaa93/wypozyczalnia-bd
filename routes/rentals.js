@@ -4,7 +4,7 @@ const Rental = require('../models/rental');
 const Customer = require('../models/customer');
 const Game = require('../models/game');
 const mongoose = require('mongoose');
-const Fawn = require('Fawn');
+const Fawn = require('fawn');
 
 Fawn.init(mongoose);
 //All rentals

@@ -21,9 +21,7 @@
 	<div><%=game.players%></div>
 	<div><%=game.age%></div>
 	<div><%=game.time%></div>
-	<div>
-		<%=game.numberInStock>0?'dostępne':'niedostępne'%><%=game.numberInStock%>
-	</div>
+	<div><%=game.numberInStock>0?'dostępne':'niedostępne'%></div>
 	<div><a href="/games/<%=game.id%>">Zobacz</a></div>
 	<% if(game.numberInStock>0){%>
 	<div><a href="/rentals/<%=game.id%>/rent">Wypożycz</a></div>
