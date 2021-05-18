@@ -8,14 +8,49 @@ const Fawn = require('fawn');
 
 Fawn.init(mongoose);
 //All rentals
+
 router.get('/', async (req, res) => {
 	let searchOptions = {};
 	if (req.query.title != null && req.query.title !== '') {
 		searchOptions.title = new RegExp(req.query.title, 'i');
 	}
 	try {
-		const games = await Game.find(searchOptions);
-		const rentals = await Rental.find({ game: games }).populate('game').exec();
+		const rentals = await Rental.aggregate([
+			{
+				$lookup: {
+					from: 'games',
+					localField: 'game',
+					foreignField: '_id',
+					as: 'game'
+				}
+			},
+			{
+				$unwind: '$game'
+			},
+
+			{
+				$lookup: {
+					from: 'customers',
+					localField: 'customer',
+					foreignField: '_id',
+					as: 'customer'
+				}
+			},
+			{
+				$unwind: '$customer'
+			},
+			searchOptions.title != undefined
+				? {
+						$match: {
+							'game.title': searchOptions.title
+						}
+				  }
+				: {
+						$sort: {
+							date: -1
+						}
+				  }
+		]);
 		res.render('rentals/index', {
 			rentals: rentals,
 			searchOptions: req.query

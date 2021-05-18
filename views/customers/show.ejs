@@ -1,4 +1,4 @@
-<h2><%= customer.name+' ' +customer.lastName%></h2>
+<h2><%=customer.name+' ' +customer.lastName%></h2>
 <div>mail: <%=customer.mail%></div>
 <a href="/customers/<%=customer.id%>/edit">Edytuj</a>
 <%-include('../partials/deleteForm',{url:`/customers/${customer.id}`})%>
@@ -17,7 +17,7 @@
 		<a href="/games/<%=rental.game.id%>"><%=rental.game.title%></a>
 	</div>
 	<div>
-		<a href="/customers/<%=rental.customer%>"><%=rental.customer%></a>
+		<a href="/customers/<%=rental.customer._id%>"><%=rental.customer._id%></a>
 	</div>
 
 	<div><%=rental.date.toISOString().split('T')[0]%></div>

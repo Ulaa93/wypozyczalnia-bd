@@ -15,10 +15,10 @@
 <% rentals.forEach(rental=>{%>
 <div class="container-rentals">
 	<div>
-		<a href="/games/<%=rental.game.id%>"><%=rental.game.title%></a>
+		<a href="/games/<%=rental.game._id%>"><%=rental.game.title%></a>
 	</div>
 	<div>
-		<a href="/customers/<%=rental.customer%>"><%=rental.customer%></a>
+		<a href="/customers/<%=rental.customer._id%>"><%=rental.customer.mail%></a>
 	</div>
 
 	<div><%=rental.date.toISOString().split('T')[0]%></div>

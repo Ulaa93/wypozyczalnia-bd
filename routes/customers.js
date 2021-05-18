@@ -49,9 +49,22 @@ router.post('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
 	try {
 		const customer = await Customer.findById(req.params.id).exec();
-		const rentals = await Rental.find({ customer: customer.id })
-			.populate('game')
-			.exec();
+		const rentals = await Rental.aggregate([
+			{
+				$match: { customer: customer._id }
+			},
+			{
+				$lookup: {
+					from: 'games',
+					localField: 'game',
+					foreignField: '_id',
+					as: 'game'
+				}
+			},
+			{
+				$unwind: '$game'
+			}
+		]);
 		res.render('customers/show', { customer: customer, rentals: rentals });
 	} catch {
 		res.redirect('/');
