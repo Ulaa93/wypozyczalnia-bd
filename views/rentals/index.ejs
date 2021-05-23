@@ -25,7 +25,7 @@
 
 	<div><%=rental.dateOfReturn.toISOString().split('T')[0]%></div>
 	<div>
-		<%-include('../partials/deleteForm',{url:`/rentals/${rental.id}`})%>
+		<%-include('../partials/deleteForm',{url:`/rentals/${rental._id}`})%>
 	</div>
 </div>
 <%})%>
