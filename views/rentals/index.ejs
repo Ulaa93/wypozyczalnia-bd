@@ -7,7 +7,8 @@
 <br />
 <div class="container-rentals">
 	<div>Gra</div>
-	<div>ID klienta</div>
+	<div>Dane klienta</div>
+	<div>Mail klienta</div>
 	<div>Data wypożyczenia</div>
 	<div>Data zwrotu</div>
 	<div>Zwrot</div>
@@ -18,14 +19,18 @@
 		<a href="/games/<%=rental.game._id%>"><%=rental.game.title%></a>
 	</div>
 	<div>
+		<a href="/customers/<%=rental.customer._id%>"
+			><%=rental.customer.name+' '+rental.customer.lastName%></a
+		>
+	</div>
+	<div>
 		<a href="/customers/<%=rental.customer._id%>"><%=rental.customer.mail%></a>
 	</div>
-
 	<div><%=rental.date.toISOString().split('T')[0]%></div>
 
 	<div><%=rental.dateOfReturn.toISOString().split('T')[0]%></div>
 	<div>
-		<%-include('../partials/deleteForm',{url:`/rentals/${rental._id}`})%>
+		<%-include('../partials/deleteForm',{url:`/rentals/${rental.id}`})%>
 	</div>
 </div>
 <%})%>

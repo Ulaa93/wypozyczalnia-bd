@@ -4,23 +4,33 @@ const Rental = require('./rental');
 const gameSchema = new mongoose.Schema({
 	title: {
 		type: String,
-		required: true
+		required: [true, 'Tytuł jest wymagany'],
+		minlength: [3, 'Minimalna długość tytułu to 3']
 	},
 	description: {
-		type: String
+		type: String,
+		required: [true, 'Opis jest wymagany'],
+		minlength: [5, 'Minimalna długość opisu to 5']
 	},
 	players: {
-		type: Number
+		type: Number,
+		required: [true, 'Liczba graczy jest wymagana'],
+		min: [1, 'Minimalna liczba graczy to 1']
 	},
 	age: {
-		type: Number
+		type: Number,
+		required: [true, 'Minimalny wiek jest wymagany'],
+		min: [1, 'Minimalna wiek to 1']
 	},
 	time: {
-		type: String
+		type: Number,
+		required: [true, 'Czas gry jest wymagany'],
+		min: [5, 'Minimalna czas  gry to 5 ']
 	},
 	numberInStock: {
 		type: Number,
-		default: 1
+		default: 1,
+		required: [true, 'Ilość sztuk jest wymagana']
 	}
 });
 gameSchema.pre('remove', function (next) {

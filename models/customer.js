@@ -4,16 +4,18 @@ const Rental = require('./rental');
 const customerSchema = new mongoose.Schema({
 	name: {
 		type: String,
-		required: true
+		required: [true, 'Imię jest wymagane!'],
+		minlength: [3, 'Minimalna długość imienia to 3']
 	},
 	lastName: {
 		type: String,
-		required: true
+		required: [true, 'Nazwisko jest wymagane!'],
+		minlength: [3, 'Minimalna długość nazwiska to 3']
 	},
 	mail: {
 		type: String,
-		required: true,
-		unique: true
+		required: [true, 'Mail jest wymagany!'],
+		unique: [true, 'Mail musi być unikalny!']
 	},
 	rentals: {
 		type: mongoose.Schema.Types.ObjectId,

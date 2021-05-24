@@ -38,10 +38,22 @@ router.post('/', async (req, res) => {
 		const newGame = await game.save();
 		res.redirect(`games/${newGame._id}`);
 	} catch (error) {
-		res.render('games/new', {
-			game: game,
-			errorMessage: 'Błąd podczas tworzenia gry'
-		});
+		console.log(error);
+		if (error.name == 'ValidationError') {
+			res.render('games/new', {
+				game: game,
+				errorMessage:
+					error.message
+						.split('Game validation failed:')[1]
+						.split(',')
+						.map((x) => x.split(':')[1]) || 'Błąd podczas tworzenia gry!'
+			});
+		} else {
+			res.render('games/new', {
+				game: game,
+				errorMessage: 'Błąd podczas tworzenia gry'
+			});
+		}
 	}
 });
 
@@ -78,6 +90,15 @@ router.put('/:id', async (req, res) => {
 	} catch (error) {
 		if (game == null) {
 			res.redirect('/');
+		} else if (error.name == 'ValidationError') {
+			res.render('games/new', {
+				game: game,
+				errorMessage:
+					error.message
+						.split('Game validation failed:')[1]
+						.split(',')
+						.map((x) => x.split(':')[1]) || 'Błąd podczas edycji gry!'
+			});
 		} else {
 			res.render('games/edit', {
 				game: game,

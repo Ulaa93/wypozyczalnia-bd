@@ -39,10 +39,27 @@ router.post('/', async (req, res) => {
 		const newCustomer = await customer.save();
 		res.redirect(`customers/${newCustomer.id}`);
 	} catch (error) {
-		res.render('customers/new', {
-			customer: customer,
-			errorMessage: 'Błąd podczas tworzenia klienta'
-		});
+		console.log(error);
+		if (error.name == 'TypeError') {
+			res.render('customers/new', {
+				customer: customer,
+				errorMessage: 'Mail musi być unikalny!'
+			});
+		} else if (error.name == 'ValidationError') {
+			res.render('customers/new', {
+				customer: customer,
+				errorMessage:
+					error.message
+						.split('Customer validation failed:')[1]
+						.split(',')
+						.map((x) => x.split(':')[1]) || 'Błąd podczas tworzenia gry!'
+			});
+		} else {
+			res.render('customers/new', {
+				customer: customer,
+				errorMessage: 'Błąd podczas tworzenia gry!'
+			});
+		}
 	}
 });
 
@@ -89,14 +106,30 @@ router.put('/:id', async (req, res) => {
 		customer.mail = req.body.mail;
 		await customer.save();
 		res.redirect(`/customers/${customer._id}`);
-	} catch {
+	} catch (error) {
 		if (customer == null) {
 			res.redirect('/');
 		} else {
-			res.render('customers/edit', {
-				customer: customer,
-				errorMessage: 'Błąd podczas edycji danych'
-			});
+			if (error.name == 'TypeError') {
+				res.render('customers/new', {
+					customer: customer,
+					errorMessage: 'Mail musi być unikalny!'
+				});
+			} else if (error.name == 'ValidationError') {
+				res.render('customers/new', {
+					customer: customer,
+					errorMessage:
+						error.message
+							.split('Customer validation failed:')[1]
+							.split(',')
+							.map((x) => x.split(':')[1]) || 'Błąd podczas tworzenia klienta!'
+				});
+			} else {
+				res.render('customers/new', {
+					customer: customer,
+					errorMessage: 'Błąd podczas tworzenia klienta!'
+				});
+			}
 		}
 	}
 });
